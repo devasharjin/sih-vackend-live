@@ -1,4 +1,3 @@
-import "../types/express";
 import { NextFunction, Request, Response } from "express";
 import { UserRole } from "../models/auth/user.model";
 import { fail } from "../shared/envelope";
