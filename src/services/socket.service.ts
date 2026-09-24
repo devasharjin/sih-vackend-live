@@ -19,9 +19,28 @@ export interface SocketNotificationPayload {
  * Initialize Socket.io on the shared HTTP server
  */
 export function initSocket(server: http.Server): SocketIOServer {
+  const allowedOrigins = [
+    process.env.CLIENT_URL,
+    "https://fairgigs-f2l1-jet.vercel.app",
+    "https://fairgigs.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+  ].filter(Boolean) as string[];
+
   io = new SocketIOServer(server, {
     cors: {
-      origin: process.env.CLIENT_URL || "https://devasharjin.github.io/fairgigs",
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (
+          allowedOrigins.includes(origin) ||
+          /^https:\/\/fairgigs-[a-z0-9-]+\.vercel\.app$/.test(origin) ||
+          /^https:\/\/.*\.vercel\.app$/.test(origin) ||
+          /^http:\/\/localhost:[0-9]+$/.test(origin)
+        ) {
+          return callback(null, true);
+        }
+        callback(null, false);
+      },
       credentials: true,
       methods: ["GET", "POST"],
     },

@@ -32,6 +32,7 @@ router.post(
 );
 router.post("/login", asyncHandler(login));
 router.post("/refresh-token", asyncHandler(refreshToken));
+router.post("/refresh", asyncHandler(refreshToken));
 router.post("/logout", asyncHandler(logout));
 router.get("/me", requireAuth, asyncHandler(getProfile));
 router.get("/cooperatives", asyncHandler(getCooperatives));

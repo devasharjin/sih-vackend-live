@@ -3,6 +3,7 @@ import User, { AccountStatus } from "../../models/auth/user.model";
 import { fail, ok } from "../../shared/envelope";
 import { generateAuthTokens } from "../../utils/jwt.utils";
 import { comparePassword } from "../../utils/password";
+import { setAuthCookies } from "../../utils/cookie.utils";
 
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -36,22 +37,8 @@ export async function login(req: Request, res: Response) {
   // 6. Generate authentication tokens
   const tokens = generateAuthTokens(user);
 
-  // 7. Set HTTP-Only Cookies
-  const isProd = process.env.NODE_ENV === "production";
-
-  res.cookie("accessToken", tokens.accessToken, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "strict" : "lax",
-    maxAge: 15 * 60 * 1000, // 15 minutes
-  });
-
-  res.cookie("refreshToken", tokens.refreshToken, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "strict" : "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
+  // 7. Set HTTP-Only Cookies (supports cross-site production deployments)
+  setAuthCookies(res, tokens);
 
   // 8. Return response payload without sensitive fields
   const userResponse = {
@@ -66,7 +53,12 @@ export async function login(req: Request, res: Response) {
 
   return ok(
     res,
-    { user: userResponse, tokens },
+    {
+      user: userResponse,
+      tokens,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    },
     "Login successful"
   );
 }

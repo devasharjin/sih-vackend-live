@@ -9,6 +9,7 @@ import Category from "../../../models/category.model";
 import Service from "../../../models/service.model";
 import { fail, ok } from "../../../shared/envelope";
 import { generateAuthTokens } from "../../../utils/jwt.utils";
+import { setAuthCookies } from "../../../utils/cookie.utils";
 import { uploadToCloudinary } from "../../../services/cloudinaryservices";
 
 export const workerRegister = async (
@@ -362,23 +363,7 @@ export const workerRegister = async (
   let tokens;
   if (updatedUser) {
     tokens = generateAuthTokens(updatedUser);
-    const isProd = process.env.NODE_ENV === "production";
-
-    res.cookie("accessToken", tokens.accessToken, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "strict" : "lax",
-      path: "/",
-      maxAge: 15 * 60 * 1000,
-    });
-
-    res.cookie("refreshToken", tokens.refreshToken, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "strict" : "lax",
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    setAuthCookies(res, tokens);
   }
 
   const populatedWorker = await Worker.findById(worker._id)

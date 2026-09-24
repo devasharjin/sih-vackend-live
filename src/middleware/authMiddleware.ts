@@ -6,12 +6,12 @@ import { verifyAccessToken, AccessTokenPayload } from "../utils/jwt.utils";
 type Role = UserRole | string;
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
-  // Extract token from HTTP-Only cookie or Authorization Bearer header
+  // Extract token: Prioritize Authorization Bearer header, fallback to HTTP-Only cookie
   const authHeader = req.headers.authorization;
   const tokenFromHeader = authHeader?.startsWith("Bearer ")
     ? authHeader.split(" ")[1]
     : null;
-  const token = req.cookies?.accessToken || tokenFromHeader;
+  const token = tokenFromHeader || req.cookies?.accessToken;
 
   if (!token) {
     return fail(res, "Unauthorized", null, 401);
@@ -56,7 +56,7 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction) {
   const tokenFromHeader = authHeader?.startsWith("Bearer ")
     ? authHeader.split(" ")[1]
     : null;
-  const token = req.cookies?.accessToken || tokenFromHeader;
+  const token = tokenFromHeader || req.cookies?.accessToken;
 
   if (token) {
     try {

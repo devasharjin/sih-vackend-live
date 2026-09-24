@@ -50,11 +50,51 @@ dotenv.config({ quiet: true });
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration (enabling cookies and credentials)
+// CORS configuration (enabling cookies and credentials across origins)
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "https://fairgigs-f2l1-jet.vercel.app",
+  "https://fairgigs.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:5000",
+].filter(Boolean) as string[];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "https://devasharjin.github.io/fairgigs",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, server-to-server, Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Allow any vercel preview deployment or subdomains
+      if (
+        /^https:\/\/fairgigs-[a-z0-9-]+\.vercel\.app$/.test(origin) ||
+        /^https:\/\/.*\.vercel\.app$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      // Allow localhost on any port in development
+      if (/^http:\/\/localhost:[0-9]+$/.test(origin)) {
+        return callback(null, true);
+      }
+
+      callback(null, false);
+    },
     credentials: true,
+    exposedHeaders: ["Set-Cookie", "Authorization", "x-refresh-token"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "x-refresh-token",
+      "X-Requested-With",
+      "Accept",
+    ],
   })
 );
 

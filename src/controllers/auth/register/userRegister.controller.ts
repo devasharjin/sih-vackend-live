@@ -3,6 +3,7 @@ import { fail, ok } from "../../../shared/envelope";
 import User, { UserRole } from "../../../models/auth/user.model";
 import { hashPassword } from "../../../utils/password";
 import { generateAuthTokens } from "../../../utils/jwt.utils";
+import { setAuthCookies } from "../../../utils/cookie.utils";
 
 export async function userRegister(req: Request, res: Response) {
   const { name, email, phone, password } = req.body;
@@ -40,24 +41,8 @@ export async function userRegister(req: Request, res: Response) {
 
   const tokens = generateAuthTokens(customer);
 
-  const isProd = process.env.NODE_ENV === "production";
-
-  res.cookie("accessToken", tokens.accessToken, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "strict" : "lax",
-    path: "/",
-    maxAge: 15 * 60 * 1000,
-  });
-
-  // Set Refresh Token in HTTP-Only Cookie
-  res.cookie("refreshToken", tokens.refreshToken, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "strict" : "lax",
-    path: "/",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
+  // Set HTTP-Only Cookies (supports cross-site production deployments)
+  setAuthCookies(res, tokens);
 
   const userResponse = {
     _id: customer._id,
@@ -71,7 +56,12 @@ export async function userRegister(req: Request, res: Response) {
 
   return ok(
     res,
-    { user: userResponse, tokens },
+    {
+      user: userResponse,
+      tokens,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    },
     "Customer registered successfully"
   );
 }

@@ -4,12 +4,14 @@ import { jwtConfig } from "../config/jwt.config";
 
 export interface AccessTokenPayload {
   userId: string;
+  id?: string;
   email: string;
   role: UserRole[] | string[] | UserRole | string;
 }
 
 export interface RefreshTokenPayload {
   userId: string;
+  id?: string;
 }
 
 export interface AuthTokens {
@@ -47,12 +49,14 @@ export function generateAuthTokens(user: {
 
   const accessToken = generateAccessToken({
     userId,
+    id: userId,
     email: user.email,
     role: user.role,
   });
 
   const refreshToken = generateRefreshToken({
     userId,
+    id: userId,
   });
 
   return { accessToken, refreshToken };

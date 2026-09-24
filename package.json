@@ -8,7 +8,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "watch": "tsc --watch",
-    "test": "tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts",
+    "test": "tsx src/tests/auth-tokens.test.ts && tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts",
+    "test:auth": "tsx src/tests/auth-tokens.test.ts",
     "test:billing": "tsx src/tests/billing.test.ts",
     "test:emergency": "tsx src/tests/emergency-booking.test.ts",
     "test:welfare": "tsx src/tests/welfare-insurance.test.ts",
@@ -18,7 +19,7 @@
     "test:socket": "tsx src/tests/socket-notification.test.ts",
     "test:cancellation": "tsx src/tests/worker-cancellation-limit.test.ts",
     "test:weekly-limit": "tsx src/tests/worker-weekly-limit.test.ts",
-    "test:all": "tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts"
+    "test:all": "tsx src/tests/auth-tokens.test.ts && tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts"
   },
   "keywords": [
     "cooperative",
