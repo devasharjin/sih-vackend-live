@@ -8,7 +8,7 @@ yarn.lock
 .env.*.local
 
 # Build output
-dist/
+
 build/
 
 # IDE

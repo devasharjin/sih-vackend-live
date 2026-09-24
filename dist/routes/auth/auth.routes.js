@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authMiddleware_1 = require("../../middleware/authMiddleware");
+const asyncHandler_1 = require("../../shared/asyncHandler");
+const workerRegister_1 = require("../../controllers/auth/register/workerRegister");
+const cooperativeRegister_1 = require("../../controllers/auth/register/cooperativeRegister");
+const login_controller_1 = require("../../controllers/auth/login.controller");
+const refreshToken_controller_1 = require("../../controllers/auth/refreshToken.controller");
+const logout_controller_1 = require("../../controllers/auth/logout.controller");
+const getProfile_controller_1 = require("../../controllers/auth/getProfile.controller");
+const getCooperatives_controller_1 = require("../../controllers/auth/getCooperatives.controller");
+const userRegister_controller_1 = require("../../controllers/auth/register/userRegister.controller");
+const multer_middleware_1 = require("../../middleware/multer.middleware");
+const router = (0, express_1.Router)();
+router.post("/register/customer", (0, asyncHandler_1.asyncHandler)(userRegister_controller_1.userRegister));
+router.post("/register/worker", authMiddleware_1.requireAuth, multer_middleware_1.workerDocumentsUpload, (0, asyncHandler_1.asyncHandler)(workerRegister_1.workerRegister));
+router.post("/register/cooperative", authMiddleware_1.requireAuth, multer_middleware_1.cooperativeDocumentsUpload, (0, asyncHandler_1.asyncHandler)(cooperativeRegister_1.cooperativeRegister));
+router.post("/login", (0, asyncHandler_1.asyncHandler)(login_controller_1.login));
+router.post("/refresh-token", (0, asyncHandler_1.asyncHandler)(refreshToken_controller_1.refreshToken));
+router.post("/refresh", (0, asyncHandler_1.asyncHandler)(refreshToken_controller_1.refreshToken));
+router.post("/logout", (0, asyncHandler_1.asyncHandler)(logout_controller_1.logout));
+router.get("/me", authMiddleware_1.requireAuth, (0, asyncHandler_1.asyncHandler)(getProfile_controller_1.getProfile));
+router.get("/cooperatives", (0, asyncHandler_1.asyncHandler)(getCooperatives_controller_1.getCooperatives));
+exports.default = router;
+//# sourceMappingURL=auth.routes.js.map

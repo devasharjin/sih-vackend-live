@@ -1,0 +1,1 @@
+{"version":3,"file":"voiceRateLimiter.d.ts","sourceRoot":"","sources":["../../src/middleware/voiceRateLimiter.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAoB1D;;;GAGG;AACH,wBAAgB,gBAAgB,CAC9B,WAAW,GAAE,MAAW,EACxB,QAAQ,GAAE,MAAkB,SAEf,OAAO,OAAO,QAAQ,QAAQ,YAAY;;;;;;;wBAoCxD"}
