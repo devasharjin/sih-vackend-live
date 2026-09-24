@@ -48,7 +48,7 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
 dotenv.config({ quiet: true });
 
 const app: Express = express();
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
 // CORS configuration (enabling cookies and credentials across origins)
 const allowedOrigins = [
@@ -161,11 +161,12 @@ startServer();
 
 // Start listening if running locally or in standalone container (not on Vercel)
 if (!process.env.VERCEL) {
-  server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+  server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
 }
 
-// Export for Vercel serverless function compatibility
-module.exports = app;
+
+
+
 export default app;
