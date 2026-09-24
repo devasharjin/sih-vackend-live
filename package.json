@@ -1,0 +1,59 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Cooperative Gig Services Backend API",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts",
+    "test:billing": "tsx src/tests/billing.test.ts",
+    "test:emergency": "tsx src/tests/emergency-booking.test.ts",
+    "test:welfare": "tsx src/tests/welfare-insurance.test.ts",
+    "test:forecasting": "tsx src/tests/forecasting-allocation.test.ts",
+    "test:admin": "tsx src/tests/admin-flow.test.ts",
+    "test:voice": "tsx src/tests/voice-assistant.test.ts",
+    "test:socket": "tsx src/tests/socket-notification.test.ts",
+    "test:cancellation": "tsx src/tests/worker-cancellation-limit.test.ts",
+    "test:weekly-limit": "tsx src/tests/worker-weekly-limit.test.ts",
+    "test:all": "tsx src/tests/billing.test.ts && tsx src/tests/emergency-booking.test.ts && tsx src/tests/welfare-insurance.test.ts && tsx src/tests/forecasting-allocation.test.ts && tsx src/tests/admin-flow.test.ts && tsx src/tests/socket-notification.test.ts && tsx src/tests/worker-cancellation-limit.test.ts && tsx src/tests/worker-weekly-limit.test.ts"
+  },
+  "keywords": [
+    "cooperative",
+    "gig-services",
+    "household-services"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/compression": "^1.8.1",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^26.4.1",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.4",
+    "morgan": "^1.12.0",
+    "multer": "^2.3.0",
+    "razorpay": "^2.9.8",
+    "socket.io": "^4.8.3",
+    "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.13"
+  }
+}
