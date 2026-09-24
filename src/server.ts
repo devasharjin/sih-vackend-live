@@ -36,8 +36,15 @@ import workerForecastingRoutes from './routes/worker/forecasting.routes';
 import { notFound } from './middleware/notFound';
 import { errorHandler } from './middleware/errorHandler';
 
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-dns.setDefaultResultOrder("ipv4first");
+// Only override DNS in local development (Vercel Lambda manages its own DNS resolution)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  try {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+    dns.setDefaultResultOrder("ipv4first");
+  } catch (err) {
+    console.warn("DNS override skipped:", err);
+  }
+}
 
 dotenv.config({ quiet: true });
 
@@ -60,7 +67,11 @@ app.use(morgan('dev'));
 
 // Basic health check route
 app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok', message: 'Cooperative Gig Services API is running' });
+  res.status(200).json({
+    status: 'ok',
+    message: 'Cooperative Gig Services API is running',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // API Routes
@@ -102,13 +113,20 @@ const io = initSocket(server);
 const startServer = async () => {
   try {
     await connectDB();
-   
   } catch (error) {
     console.error('Failed to start server:', error);
-    process.exit(1);
   }
 };
 
 startServer();
 
+// Start listening if running locally or in standalone container (not on Vercel)
+if (!process.env.VERCEL) {
+  server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel serverless function compatibility
+module.exports = app;
 export default app;
